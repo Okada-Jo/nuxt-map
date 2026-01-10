@@ -13,6 +13,7 @@ export default withNuxt(antfu({
     semi: true,
     quotes: 'single',
   },
+  ignore: ['.pnpm-store/**'],
 }, {
   rules: {
     'ts/consistent-type-definitions': ['error', 'type'],
