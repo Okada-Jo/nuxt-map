@@ -19,6 +19,7 @@
     "@nuxt/icon": "^2.2.0",
     "@nuxtjs/color-mode": "^4.0.0",
     "@tailwindcss/vite": "^4.1.18",
+    "better-auth": "^1.6.0",
     "drizzle-orm": "^0.45.1",
     "nuxt": "^4.2.2",
     "vite": "^6.3.5",
@@ -44,6 +45,6 @@
     "tailwindcss": "^4.1.18"
   },
   "lint-staged": {
-    "*": "pnpm lint"
+    "*.{ts,js,tsx,jsx,json}": "eslint --fix"
   }
 }
