@@ -13,7 +13,7 @@ export default withNuxt(antfu({
     semi: true,
     quotes: 'single',
   },
-  ignore: ['.pnpm-store/**'],
+  ignore: ['.pnpm-store/**', '**/migrations/*'],
 }, {
   rules: {
     'ts/no-redeclare': 'off',
