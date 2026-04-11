@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { FetchError } from 'ofetch';
 
-import { insertLocation } from '~/lib/db/schema/location';
+import { InsertLocation } from '~/lib/db/schema/location';
 
 const { $csrfFetch } = useNuxtApp();
 const router = useRouter();
@@ -10,7 +10,7 @@ const submitted = ref(false);
 const submitError = ref('');
 
 const { handleSubmit, errors, meta, setErrors } = useForm({
-  validationSchema: insertLocation,
+  validationSchema: InsertLocation,
 });
 
 const onSubmit = handleSubmit(async (values) => {
@@ -29,7 +29,7 @@ const onSubmit = handleSubmit(async (values) => {
     if (error.data?.data) {
       setErrors(error.data?.data);
     }
-    submitError.value = error.statusMessage || 'An unknown error occured';
+    submitError.value = error.data?.statusMessage || error.statusMessage || 'An unknown error occured';
   }
   loading.value = false;
 });
