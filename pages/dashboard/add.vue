@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import type { FetchError } from 'ofetch';
 
+import type { NominatimResult } from '~/lib/types';
+
 import { OSAKA } from '~/lib/constants/constants';
 import { InsertLocation } from '~/lib/db/schema/location';
+import getFetchErrorMessage from '~/utils/get-fetch-error-message';
 
 const mapStore = useMapStore();
 
@@ -38,7 +41,7 @@ const onSubmit = handleSubmit(async (values) => {
     if (error.data?.data) {
       setErrors(error.data?.data);
     }
-    submitError.value = error.data?.statusMessage || error.statusMessage || 'An unknown error occured';
+    submitError.value = getFetchErrorMessage(error);
   }
   loading.value = false;
 });
@@ -53,6 +56,19 @@ effect(() => {
 function formatNumber(value: number) {
   return value.toFixed(5);
 }
+
+function searchResultSelected(result: NominatimResult) {
+  setFieldValue('name', result.display_name);
+  mapStore.addedPoint = {
+    name: 'Added point',
+    id: 1,
+    description: '',
+    long: Number(result.lon),
+    lat: Number(result.lat),
+    centerMap: true,
+  };
+}
+
 onMounted(() => {
   mapStore.addedPoint = {
     name: 'Added point',
@@ -122,21 +138,31 @@ onBeforeRouteLeave(() => {
           :error="errors.description"
           :disabled="loading"
         />
-        <p>
-          Click on the map or drag the
-          <Icon
-            name="tabler:map-pin-filled"
-            size="16"
-            class="text-warning"
-          />
-          marker to your desired location
-        </p>
-
         <p v-if="controlledValues.lat && controlledValues.long" class="text-xs opacity-65">
-          Current location:
+          Current coordinates:
           {{ formatNumber(controlledValues.lat) }},
           {{ formatNumber(controlledValues.long) }}
         </p>
+        <p>
+          To set the coordinates:
+        </p>
+        <ul class="list-disc ml-4 text-sm">
+          <li>
+            Drag the
+            <Icon
+              name="tabler:map-pin-filled"
+              size="16"
+              class="text-warning"
+            />
+            on the map.
+          </li>
+          <li>
+            Click on the map directly.
+          </li>
+          <li>
+            Search for a location below.
+          </li>
+        </ul>
         <div class="flex justify-end gap-2">
           <button
             :disabled="loading"
@@ -162,6 +188,8 @@ onBeforeRouteLeave(() => {
           </button>
         </div>
       </form>
+      <div class="divider" />
+      <AppPlaceSearch @result-selected="searchResultSelected" />
     </div>
   </div>
 </template>

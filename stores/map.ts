@@ -7,7 +7,7 @@ const BOUND_PADDING = 60;
 export const useMapStore = defineStore('useMapStore', () => {
   const mapPoints = ref<MapPoint[]>([]);
   const selectedPoint = ref<MapPoint | null>(null);
-  const addedPoint = ref<MapPoint | null>(null);
+  const addedPoint = ref<MapPoint & { centerMap?: boolean } | null>(null);
 
   let bounds: LngLatBounds | null = null;
 
@@ -38,10 +38,10 @@ export const useMapStore = defineStore('useMapStore', () => {
     });
 
     watch(addedPoint, (newValue, oldValue) => {
-      if (newValue && !oldValue) {
+      if ((newValue && !oldValue) || newValue?.centerMap) {
         map.map?.flyTo({
           center: [newValue.long, newValue.lat],
-          speed: 0.75,
+          speed: newValue?.centerMap ? 1.25 : 0.75,
           zoom: 6,
         });
       }
