@@ -27,6 +27,15 @@
     { "rule": "*semi", "severity": "off", "fixable": true }
   ],
 
+  "tailwindCSS.includeLanguages": {
+    "html": "html",
+    "javascript": "javascript",
+    "css": "css"
+  },
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+
   // Enable eslint for all supported languages
   "eslint.validate": [
     "javascript",

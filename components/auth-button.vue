@@ -7,7 +7,11 @@ const { signIn } = authStore;
 <template>
   <ClientOnly>
     <div v-if="!loading && user && user.name" class="dropdown dropdown-end">
-      <div tabindex="0" role="button" class="btn m-1">
+      <div
+        tabindex="0"
+        role="button"
+        class="btn m-1"
+      >
         <div v-if="user.image" class="avater">
           <div class="w-8 rounded-full">
             <img
@@ -35,7 +39,11 @@ const { signIn } = authStore;
     >
       Sign in with github
       <span v-if="loading" class="loading loading-spinner loading-md" />
-      <Icon v-else name="tabler:brand-github" size="24" />
+      <Icon
+        v-else
+        name="tabler:brand-github"
+        size="24"
+      />
     </button>
   </ClientOnly>
 </template>

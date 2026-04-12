@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useLocationStore } from '~/stores/locationstore';
+import { useLocationStore } from '~/stores/locations';
 import { useSidebarStore } from '~/stores/sidebar';
 
 const isSidebarOpen = ref(true);
@@ -23,7 +23,7 @@ function toggleSidebar() {
 <template>
   <div class="flex flex-1">
     <div
-      class="bg-base-200 transition-all duration-300"
+      class="bg-base-200 transition-all duration-300 shrink-0"
       :class="[isSidebarOpen ? 'w-64' : 'w-16']"
     >
       <div
@@ -71,9 +71,11 @@ function toggleSidebar() {
         />
       </div>
     </div>
-    <div class="flex flex-col gap -2 flex-1">
-      <NuxtPage />
-      <AppMap class="flex-1" />
+    <div class="flex-1 overflow-auto">
+      <div class="flex flex-col size-full ">
+        <NuxtPage />
+        <AppMap class="flex-1" />
+      </div>
     </div>
   </div>
 </template>

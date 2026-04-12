@@ -2,6 +2,7 @@
 import { OSAKA } from '~/lib/constants/constants';
 
 const colorMode = useColorMode();
+const mapStore = useMapStore();
 
 const style = computed(() => {
   if (colorMode.value === 'dark') {
@@ -11,7 +12,11 @@ const style = computed(() => {
   return 'https://tiles.openfreemap.org/styles/liberty';
 });
 const center = OSAKA;
-const zoom = 7;
+const zoom = 6;
+
+onMounted(() => {
+  mapStore.init();
+});
 </script>
 
 <template>
@@ -21,5 +26,21 @@ const zoom = 7;
     :zoom="zoom"
   >
     <MglNavigationControl />
+    <MglMarker
+      v-for="point in mapStore.mapPoints"
+      :key="point.id"
+      :coordinates="[point.long, point.lat]"
+    >
+      <template #marker>
+        <span class="tooltip tooltip-top" :data-tip="point.label">
+
+          <Icon
+            name="tabler:map-pin-filled"
+            size="32"
+            class="text-secondary"
+          />
+        </span>
+      </template>
+    </MglMarker>
   </MglMap>
 </template>
