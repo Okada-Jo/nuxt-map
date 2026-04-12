@@ -7,7 +7,7 @@ const BOUND_PADDING = 60;
 export const useMapStore = defineStore('useMapStore', () => {
   const mapPoints = ref<MapPoint[]>([]);
   const selectedPoint = ref<MapPoint | null>(null);
-  const shouldFlyTo = ref(false);
+  const addedPoint = ref<MapPoint | null>(null);
 
   let bounds: LngLatBounds | null = null;
 
@@ -37,26 +37,20 @@ export const useMapStore = defineStore('useMapStore', () => {
       });
     });
 
-    effect(() => {
-      if (selectedPoint.value) {
-        if (shouldFlyTo.value) {
-          map.map?.flyTo({
-            center: [selectedPoint.value.long, selectedPoint.value.lat],
-            speed: 0.75,
-          });
-        }
-        shouldFlyTo.value = false;
-      }
-      else if (bounds) {
-        map.map?.fitBounds(bounds, {
-          padding: BOUND_PADDING,
+    watch(addedPoint, (newValue, oldValue) => {
+      if (newValue && !oldValue) {
+        map.map?.flyTo({
+          center: [newValue.long, newValue.lat],
+          speed: 0.75,
+          zoom: 6,
         });
       }
+    }, {
+      immediate: true,
     });
   }
 
-  function selectPoint(point: MapPoint | null, { disableFlyTo = false } = {}) {
-    shouldFlyTo.value = !disableFlyTo;
+  function selectPoint(point: MapPoint | null) {
     selectedPoint.value = point;
   }
 
@@ -65,5 +59,6 @@ export const useMapStore = defineStore('useMapStore', () => {
     mapPoints,
     selectedPoint,
     selectPoint,
+    addedPoint,
   };
 });

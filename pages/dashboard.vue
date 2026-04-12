@@ -24,12 +24,12 @@ function toggleSidebar() {
 <template>
   <div class="flex flex-1">
     <div
-      class="bg-base-200 transition-all duration-300 shrink-0"
+      class="bg-base-100 transition-all duration-300 shrink-0"
       :class="[isSidebarOpen ? 'w-64' : 'w-16']"
     >
       <div
         :class="[isSidebarOpen ? 'justify-end' : 'justify-center']"
-        class="flex hover:cursor-pointer hover:bg-base-100 p-2"
+        class="flex hover:cursor-pointer hover:bg-base-300 p-2"
         @click="toggleSidebar"
       >
         <Icon :name="isSidebarOpen ? 'tabler-chevron-left' : 'tabler-chevron-right'" size="32" />
@@ -75,10 +75,15 @@ function toggleSidebar() {
         />
       </div>
     </div>
-    <div class="flex-1 overflow-auto">
-      <div class="flex flex-col size-full ">
+    <div class="flex-1 overflow-auto bg-base-200">
+      <div
+        class="flex size-full"
+        :class="{ 'flex-col': route.path !== '/dashboard/add' }"
+      >
         <NuxtPage />
-        <AppMap class="flex-1" />
+        <div class="flex-1">
+          <AppMap />
+        </div>
       </div>
     </div>
   </div>

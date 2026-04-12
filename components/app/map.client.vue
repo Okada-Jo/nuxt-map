@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { LngLat, MapMouseEvent } from 'maplibre-gl';
+
 import { OSAKA } from '~/lib/constants/constants';
 
 const colorMode = useColorMode();
@@ -11,8 +13,30 @@ const style = computed(() => {
 
   return 'https://tiles.openfreemap.org/styles/liberty';
 });
-const center = OSAKA;
-const zoom = 6;
+const initialCenter = OSAKA;
+const initialZoom = 6;
+
+function updateAddedPoint(location: LngLat) {
+  if (mapStore.addedPoint) {
+    mapStore.addedPoint = {
+      ...mapStore.addedPoint,
+      lat: location.lat,
+      long: location.lng,
+    };
+  }
+}
+
+function setAddedPoint(mglEvent: { event: MapMouseEvent }) {
+  const newCoords = mglEvent.event.lngLat;
+
+  if (mapStore.addedPoint && newCoords) {
+    mapStore.addedPoint = {
+      ...mapStore.addedPoint,
+      lat: newCoords.lat,
+      long: newCoords.lng,
+    };
+  }
+}
 
 onMounted(() => {
   mapStore.init();
@@ -22,10 +46,32 @@ onMounted(() => {
 <template>
   <MglMap
     :map-style="style"
-    :center="center"
-    :zoom="zoom"
+    :center="initialCenter"
+    :zoom="initialZoom"
+    @map:click="setAddedPoint"
   >
     <MglNavigationControl />
+    <MglMarker
+      v-if="mapStore.addedPoint"
+      draggable
+      :coordinates="[mapStore.addedPoint.long, mapStore.addedPoint.lat]"
+      @update:coordinates="updateAddedPoint"
+    >
+      <template #marker>
+        <span
+          class="tooltip tooltip-open hover:cursor-drag"
+          data-tip="Drag to your desired location"
+        >
+
+          <Icon
+            name="tabler:map-pin-filled"
+            size="36"
+            class="text-warning"
+          />
+        </span>
+      </template>
+    </MglMarker>
+
     <MglMarker
       v-for="point in mapStore.mapPoints"
       :key="point.id"
@@ -38,8 +84,8 @@ onMounted(() => {
             'tooltip-open': mapStore.selectedPoint === point,
           }"
           :data-tip="point.name"
-          @mouseenter="mapStore.selectPoint(point, { disableFlyTo: true })"
-          @mouseleave="mapStore.selectPoint(null, { disableFlyTo: true })"
+          @mouseenter="mapStore.selectPoint(point)"
+          @mouseleave="mapStore.selectPoint(null)"
         >
 
           <Icon
