@@ -8,7 +8,15 @@ export default defineNuxtConfig({
     autoImport: true,
   },
   devtools: { enabled: true },
-  modules: ['@nuxt/eslint', '@nuxt/icon', '@nuxtjs/color-mode', '@pinia/nuxt', '@vee-validate/nuxt', 'nuxt-csurf'],
+  modules: [
+    '@nuxt/eslint',
+    '@nuxt/icon',
+    '@nuxtjs/color-mode',
+    '@pinia/nuxt',
+    '@vee-validate/nuxt',
+    'nuxt-csurf',
+    'nuxt-maplibre',
+  ],
   css: ['@/assets/css/main.css'],
   eslint: {
     config: {
