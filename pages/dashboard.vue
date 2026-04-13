@@ -60,6 +60,7 @@ function toggleSidebar() {
             :label="item.label"
             :icon="item.icon"
             :href="item.href"
+            :to="item.to"
             :icon-color="mapStore.selectedPoint === item.location ? 'text-accent' : undefined"
             @mouseenter="mapStore.selectPoint(item.location ?? null)"
             @mouseleave="mapStore.selectPoint(null)"

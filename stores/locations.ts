@@ -5,6 +5,7 @@ export const useLocationStore = defineStore ('useLocationStore', () => {
 
   const sidebarStore = useSidebarStore();
   const mapStore = useMapStore();
+  const localePath = useLocalePath();
 
   effect(() => {
     if (data.value) {
@@ -12,7 +13,7 @@ export const useLocationStore = defineStore ('useLocationStore', () => {
         id: `location-${location.name}`,
         label: location.name,
         icon: 'tabler:map-pin-filled',
-        href: '#',
+        to: localePath({ name: 'dashboard-location-slug', params: { slug: location.slug } }),
         location,
       }));
 
