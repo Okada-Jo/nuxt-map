@@ -6,6 +6,7 @@
       </NuxtLink>
     </div>
     <div class="navbar-end">
+      <AppLocaleSwitch />
       <AppThemeToggle />
       <AuthButton />
     </div>

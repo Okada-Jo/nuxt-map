@@ -13,7 +13,7 @@ onMounted(() => {
 <template>
   <div class="p-4">
     <h2 class="text-2xl">
-      Locations
+      {{ $t('Locations') }}
     </h2>
     <div v-if="status === 'pending'">
       <span class="loading loading-spinner loading-xl" />
