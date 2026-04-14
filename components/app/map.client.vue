@@ -2,6 +2,7 @@
 import type { LngLat, MapMouseEvent } from 'maplibre-gl';
 
 import { OSAKA } from '~/lib/constants/constants';
+import { isPointSelected } from '~/utils/map-points';
 
 const colorMode = useColorMode();
 const mapStore = useMapStore();
@@ -82,17 +83,16 @@ onMounted(() => {
         <span
           class="tooltip hover:cursor-pointer"
           :class="{
-            'tooltip-open': mapStore.selectedPoint === point,
+            'tooltip-open': isPointSelected(point, mapStore.selectedPoint),
           }"
           :data-tip="point.name"
           @mouseenter="mapStore.selectPoint(point)"
           @mouseleave="mapStore.selectPoint(null)"
         >
-
           <Icon
             name="tabler:map-pin-filled"
             size="32"
-            :class="mapStore.selectedPoint === point ? 'text-accent' : 'text-secondary'"
+            :class="isPointSelected(point, mapStore.selectedPoint) ? 'text-accent' : 'text-secondary'"
           />
         </span>
       </template>
@@ -103,6 +103,15 @@ onMounted(() => {
         <p v-if="point.description">
           {{ point.description }}
         </p>
+        <div class="flex justify-end mt-4">
+          <NuxtLink
+            v-if="point.to"
+            class="btn btn-sm btn-outline"
+            :to="point.to"
+          >
+            {{ point.toLabel }}
+          </NuxtLink>
+        </div>
       </MglPopup>
     </MglMarker>
   </MglMap>

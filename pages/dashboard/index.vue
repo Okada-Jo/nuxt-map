@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useLocationStore } from '~/stores/locations';
+import { isPointSelected } from '~/utils/map-points';
 
 const locationsStore = useLocationStore();
 const mapStore = useMapStore();
@@ -11,7 +12,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="p-4">
+  <div class="p-4 min-h-64">
     <h2 class="text-2xl">
       {{ $t('Locations') }}
     </h2>
@@ -22,15 +23,15 @@ onMounted(() => {
       v-else-if="locations && locations.length > 0"
       class="flex flex-nowrap mt-4 gap-2 overflow-auto"
     >
-      <div
+      <NuxtLink
         v-for="location in locations"
         :key="location.id"
-
+        :to="$localePath({ name: 'dashboard-location-slug', params: { slug: location.slug } })"
         class="card card-compact bg-base-300 h-40 mb-2 border-2 w-72 shrink-0 hover:cursor-pointer"
         :class="[
-          location.id === mapStore.selectedPoint?.id ? 'border-accent' : 'border-transparent',
+          isPointSelected(location, mapStore.selectedPoint) ? 'border-accent' : 'border-transparent',
         ]"
-        @mouseenter="mapStore.selectPoint(location)"
+        @mouseenter="mapStore.selectPoint(createMapPointFromLocation(location))"
         @mouseleave="mapStore.selectPoint(null)"
       >
         <div class="card-body">
@@ -39,7 +40,7 @@ onMounted(() => {
           </h3>
           <p>{{ location.description }}</p>
         </div>
-      </div>
+      </NuxtLink>
     </div>
     <div v-else class="flex flex-col gap-2 mt-4">
       <p>Add a location to get started</p>
