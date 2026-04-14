@@ -3,6 +3,7 @@ import type { LngLatBounds } from 'maplibre-gl';
 import type { MapPoint } from '~/lib/types';
 
 const BOUND_PADDING = 60;
+const MAX_ZOOM = 11;
 
 export const useMapStore = defineStore('useMapStore', () => {
   const mapPoints = ref<MapPoint[]>([]);
@@ -34,6 +35,7 @@ export const useMapStore = defineStore('useMapStore', () => {
 
       map.map?.fitBounds(bounds, {
         padding: BOUND_PADDING,
+        maxZoom: MAX_ZOOM,
       });
     });
 
