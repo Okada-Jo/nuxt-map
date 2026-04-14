@@ -9,10 +9,47 @@ const locationsStore = useLocationStore();
 const sidebarStore = useSidebarStore();
 const mapStore = useMapStore();
 
+const localePath = useLocalePath();
+const getRouteBaseName = useRouteBaseName();
+
 onMounted(() => {
   isSidebarOpen.value = localStorage.getItem('isSidebarOpen') === 'true';
-  if (route.path !== '/dashboard') {
+  if (getRouteBaseName(route) !== 'dashboard') {
     locationsStore.refresh();
+  }
+});
+
+effect(() => {
+  if (getRouteBaseName(route) === 'dashboard') {
+    sidebarStore.sidebarTopItems = [{
+      id: 'link-dashboard',
+      label: 'Locations',
+      href: localePath('/dashboard'),
+      icon: 'tabler:map',
+    }, {
+      id: 'link-dashboard-add',
+      label: 'Add Location',
+      href: localePath('/dashboard/add'),
+      icon: 'tabler:circle-plus-filled',
+    }];
+  }
+  else if (getRouteBaseName(route) === 'dashboard-location-slug') {
+    sidebarStore.sidebarTopItems = [{
+      id: 'link-dashboard-back',
+      label: 'Back to Locations',
+      href: localePath('/dashboard'),
+      icon: 'tabler:arrow-left',
+    }, {
+      id: 'link-dashboard',
+      label: 'View Logs',
+      href: localePath('/dashboard'),
+      icon: 'tabler:map',
+    }, {
+      id: 'link-dashboard-add',
+      label: 'Add Location Log',
+      href: localePath('/dashboard/add'),
+      icon: 'tabler:circle-plus-filled',
+    }];
   }
 });
 
@@ -37,18 +74,14 @@ function toggleSidebar() {
       </div>
       <div class="flex flex-col">
         <SidebarButton
-          href="/dashboard"
+          v-for="item in sidebarStore.sidebarTopItems"
+          :key="item.id"
+          :href="item.href"
+          :to="item.to"
           :show-label="isSidebarOpen"
-          label="Locations"
-          icon="tabler:map"
+          :label="item.label"
+          :icon="item.icon"
         />
-        <SidebarButton
-          href="/dashboard/add"
-          :show-label="isSidebarOpen"
-          label="Add Location"
-          icon="tabler:circle-plus-filled"
-        />
-
         <div v-if="sidebarStore.loading || sidebarStore.sidebarItems.length" class="divider" />
         <div v-if="sidebarStore.loading" class="px-4">
           <div class="skeleton h-4 w-full" />

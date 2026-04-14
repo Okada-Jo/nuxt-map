@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 @plugin "daisyui" {
   themes:
     light --default,
@@ -19,7 +19,7 @@
   @apply p-4 min-h-72;
 }
 
-html[data-theme="dark"] {
+html[data-theme='dark'] {
   .maplibregl-popup-content {
     @apply text-white bg-gray-800;
   }
