@@ -23,7 +23,7 @@ effect(() => {
   if (getRouteBaseName(route) === 'dashboard') {
     sidebarStore.sidebarTopItems = [{
       id: 'link-dashboard',
-      label: 'Locations',
+      label: $t('Locations'),
       href: localePath('/dashboard'),
       icon: 'tabler:map',
     }, {
