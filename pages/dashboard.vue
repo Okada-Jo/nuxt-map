@@ -3,11 +3,13 @@ import { useLocationStore } from '~/stores/locations';
 import { useSidebarStore } from '~/stores/sidebar';
 import { isPointSelected } from '~/utils/map-points';
 
-const isSidebarOpen = ref(true);
+const isSidebarOpen = useState('sidebar', () => true);
 const route = useRoute();
 const locationsStore = useLocationStore();
 const sidebarStore = useSidebarStore();
 const mapStore = useMapStore();
+
+const { currentLocation } = storeToRefs(locationsStore);
 
 const localePath = useLocalePath();
 const getRouteBaseName = useRouteBaseName();
@@ -15,7 +17,7 @@ const getRouteBaseName = useRouteBaseName();
 onMounted(() => {
   isSidebarOpen.value = localStorage.getItem('isSidebarOpen') === 'true';
   if (getRouteBaseName(route) !== 'dashboard') {
-    locationsStore.refresh();
+    locationsStore.refreshLocations();
   }
 });
 
@@ -41,13 +43,24 @@ effect(() => {
       icon: 'tabler:arrow-left',
     }, {
       id: 'link-dashboard',
-      label: 'View Logs',
+      label: currentLocation.value ? currentLocation.value.name : 'View Logs',
+      to: localePath({
+        name: 'dashboard-location-slug',
+        params: {
+          slug: currentLocation.value?.slug,
+        },
+      }),
       href: localePath('/dashboard'),
       icon: 'tabler:map',
     }, {
       id: 'link-dashboard-add',
       label: 'Add Location Log',
-      href: localePath('/dashboard/add'),
+      to: localePath({
+        name: 'dashboard-location-slug-add',
+        params: {
+          slug: currentLocation.value?.slug,
+        },
+      }),
       icon: 'tabler:circle-plus-filled',
     }];
   }
