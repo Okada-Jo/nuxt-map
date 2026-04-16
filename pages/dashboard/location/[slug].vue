@@ -8,9 +8,9 @@ const {
 } = storeToRefs(locationStore);
 
 onMounted(() => {
-  setTimeout(() => {
+  nextTick(() => {
     locationStore.refreshCurrentLocation();
-  }, 100);
+  });
 });
 
 effect(() => {
