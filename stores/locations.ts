@@ -1,10 +1,8 @@
 import type { SelectLocationWithLogs } from '~/lib/db/schema';
 import type { MapPoint } from '~/lib/types';
 
+import { CURRENT_LOCATION_PAGES, LOCATION_PAGES } from '~/lib/constants/constants';
 import { createMapPointFromLocation } from '~/utils/map-points';
-
-const listLocationsInSidebar = new Set(['dashboard', 'dashboard-add']);
-const listCurrentLocationInSidebar = new Set(['dashboard-location-slug', 'dashboard-location-slug-add', 'dashboard-location-slug-edit']);
 
 export const useLocationStore = defineStore ('useLocationStore', () => {
   const route = useRoute();
@@ -32,7 +30,7 @@ export const useLocationStore = defineStore ('useLocationStore', () => {
   const localePath = useLocalePath();
 
   effect(() => {
-    if (locations.value && listLocationsInSidebar.has(getRouteBaseName(route)?.toString() || '')) {
+    if (locations.value && LOCATION_PAGES.has(getRouteBaseName(route)?.toString() || '')) {
       const mapPoints: MapPoint[] = [];
       const sidebarItems: SidebarItem[] = [];
 
@@ -51,7 +49,7 @@ export const useLocationStore = defineStore ('useLocationStore', () => {
       sidebarStore.sidebarItems = sidebarItems;
       mapStore.mapPoints = mapPoints;
     }
-    else if (currentLocation.value && listCurrentLocationInSidebar.has(getRouteBaseName(route)?.toString() || '')) {
+    else if (currentLocation.value && CURRENT_LOCATION_PAGES.has(getRouteBaseName(route)?.toString() || '')) {
       sidebarStore.sidebarItems = [];
       mapStore.mapPoints = [currentLocation.value];
     }
