@@ -42,7 +42,7 @@ effect(() => {
       href: localePath('/dashboard'),
       icon: 'tabler:arrow-left',
     }, {
-      id: 'link-dashboard',
+      id: 'link-location',
       label: currentLocation.value ? currentLocation.value.name : 'View Logs',
       to: localePath({
         name: 'dashboard-location-slug',
@@ -50,10 +50,19 @@ effect(() => {
           slug: currentLocation.value?.slug,
         },
       }),
-      href: localePath('/dashboard'),
       icon: 'tabler:map',
     }, {
-      id: 'link-dashboard-add',
+      id: 'link-location-edit',
+      label: 'Edit Location',
+      to: localePath({
+        name: 'dashboard-location-slug-edit',
+        params: {
+          slug: currentLocation.value?.slug,
+        },
+      }),
+      icon: 'tabler:map-pin-cog',
+    }, {
+      id: 'link-location-add',
       label: 'Add Location Log',
       to: localePath({
         name: 'dashboard-location-slug-add',

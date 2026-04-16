@@ -3,8 +3,12 @@ import type { MapPoint } from '~/lib/types';
 
 import { createMapPointFromLocation } from '~/utils/map-points';
 
+const listLocationsInSidebar = new Set(['dashboard', 'dashboard-add']);
+const listCurrentLocationInSidebar = new Set(['dashboard-location-slug', 'dashboard-location-slug-add', 'dashboard-location-slug-edit']);
+
 export const useLocationStore = defineStore ('useLocationStore', () => {
   const route = useRoute();
+  const getRouteBaseName = useRouteBaseName();
 
   const { data: locations, status: locationsStatus, refresh: refreshLocations } = useFetch('/api/locations', {
     lazy: true,
@@ -28,7 +32,7 @@ export const useLocationStore = defineStore ('useLocationStore', () => {
   const localePath = useLocalePath();
 
   effect(() => {
-    if (locations.value) {
+    if (locations.value && listLocationsInSidebar.has(getRouteBaseName(route)?.toString() || '')) {
       const mapPoints: MapPoint[] = [];
       const sidebarItems: SidebarItem[] = [];
 
@@ -46,6 +50,10 @@ export const useLocationStore = defineStore ('useLocationStore', () => {
 
       sidebarStore.sidebarItems = sidebarItems;
       mapStore.mapPoints = mapPoints;
+    }
+    else if (currentLocation.value && listCurrentLocationInSidebar.has(getRouteBaseName(route)?.toString() || '')) {
+      sidebarStore.sidebarItems = [];
+      mapStore.mapPoints = [currentLocation.value];
     }
     sidebarStore.loading = locationsStatus.value === 'pending';
   });
