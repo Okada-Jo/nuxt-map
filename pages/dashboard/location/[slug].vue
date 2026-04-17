@@ -1,15 +1,24 @@
 <script setup lang="ts">
-const locationStore = useLocationStore();
+const route = useRoute();
+const getRouteBaseName = useRouteBaseName();
+const locationsStore = useLocationStore();
 const {
   currentLocation: location,
   currentLocationError: error,
   currentLocationStatus: status,
-} = storeToRefs(locationStore);
+} = storeToRefs(locationsStore);
 
 onMounted(() => {
   nextTick(() => {
-    locationStore.refreshCurrentLocation();
+    locationsStore.refreshCurrentLocation();
   });
+});
+
+onBeforeRouteUpdate((to) => {
+  const baseName = getRouteBaseName(to);
+  if (baseName === 'dashboard-location-slug') {
+    locationsStore.refreshCurrentLocation();
+  }
 });
 </script>
 
@@ -18,7 +27,17 @@ onMounted(() => {
     <div v-if="status === 'pending'">
       <div class="loading loading-spinner" />
     </div>
-    <div v-if="location && status !== 'pending'">
+
+    <div
+      v-if="error && status !== 'pending'"
+      class="alert alert-error text-lg"
+    >
+      <h2>
+        {{ error.statusMessage }}
+      </h2>
+    </div>
+
+    <div v-if="getRouteBaseName(route) === 'dashboard-location-slug' && location && status !== 'pending'">
       <h2 class="text-xl">
         {{ location?.name }}
       </h2>
@@ -40,14 +59,8 @@ onMounted(() => {
         <Icon name="tabler:map-pin-plus" size="24" />
       </button>
     </div>
-
-    <div
-      v-if="error && status !== 'pending'"
-      class="alert alert-error text-lg"
-    >
-      <h2>
-        {{ error.statusMessage }}
-      </h2>
+    <div v-if="getRouteBaseName(route) !== 'dashboard-location-slug'">
+      <NuxtPage />
     </div>
   </div>
 </template>

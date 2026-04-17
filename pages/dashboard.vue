@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { CURRENT_LOCATION_PAGES, EDIT_PAGES, LOCATION_PAGES } from '~/lib/constants/constants';
 import { useLocationStore } from '~/stores/locations';
 import { useSidebarStore } from '~/stores/sidebar';
 import { isPointSelected } from '~/utils/map-points';
@@ -9,20 +10,25 @@ const locationsStore = useLocationStore();
 const sidebarStore = useSidebarStore();
 const mapStore = useMapStore();
 
-const { currentLocation } = storeToRefs(locationsStore);
+const { currentLocation, currentLocationStatus } = storeToRefs(locationsStore);
 
 const localePath = useLocalePath();
 const getRouteBaseName = useRouteBaseName();
 
+if (LOCATION_PAGES.has(getRouteBaseName(route)?.toString() || '')) {
+  await locationsStore.refreshLocations();
+}
+
+if (CURRENT_LOCATION_PAGES.has(getRouteBaseName(route)?.toString() || '')) {
+  await locationsStore.refreshCurrentLocation();
+}
+
 onMounted(() => {
   isSidebarOpen.value = localStorage.getItem('isSidebarOpen') === 'true';
-  if (getRouteBaseName(route) !== 'dashboard') {
-    locationsStore.refreshLocations();
-  }
 });
 
 effect(() => {
-  if (getRouteBaseName(route) === 'dashboard') {
+  if (LOCATION_PAGES.has(getRouteBaseName(route)?.toString() || '')) {
     sidebarStore.sidebarTopItems = [{
       id: 'link-dashboard',
       label: $t('Locations'),
@@ -35,43 +41,46 @@ effect(() => {
       icon: 'tabler:circle-plus-filled',
     }];
   }
-  else if (getRouteBaseName(route) === 'dashboard-location-slug') {
+  else if (CURRENT_LOCATION_PAGES.has(getRouteBaseName(route)?.toString() || '')) {
     sidebarStore.sidebarTopItems = [{
       id: 'link-dashboard-back',
       label: 'Back to Locations',
       href: localePath('/dashboard'),
       icon: 'tabler:arrow-left',
-    }, {
-      id: 'link-location',
-      label: currentLocation.value ? currentLocation.value.name : 'View Logs',
-      to: localePath({
-        name: 'dashboard-location-slug',
-        params: {
-          slug: currentLocation.value?.slug,
-        },
-      }),
-      icon: 'tabler:map',
-    }, {
-      id: 'link-location-edit',
-      label: 'Edit Location',
-      to: localePath({
-        name: 'dashboard-location-slug-edit',
-        params: {
-          slug: currentLocation.value?.slug,
-        },
-      }),
-      icon: 'tabler:map-pin-cog',
-    }, {
-      id: 'link-location-add',
-      label: 'Add Location Log',
-      to: localePath({
-        name: 'dashboard-location-slug-add',
-        params: {
-          slug: currentLocation.value?.slug,
-        },
-      }),
-      icon: 'tabler:circle-plus-filled',
     }];
+    if (currentLocation.value && currentLocationStatus.value !== 'pending') {
+      sidebarStore.sidebarTopItems.push({
+        id: 'link-location',
+        label: !currentLocation.value ? 'Loading...' : currentLocation.value.name,
+        to: localePath({
+          name: 'dashboard-location-slug',
+          params: {
+            slug: route.params.slug,
+          },
+        }),
+        icon: 'tabler:map',
+      }, {
+        id: 'link-location-edit',
+        label: 'Edit Location',
+        to: localePath({
+          name: 'dashboard-location-slug-edit',
+          params: {
+            slug: route.params.slug,
+          },
+        }),
+        icon: 'tabler:map-pin-cog',
+      }, {
+        id: 'link-location-add',
+        label: 'Add Location Log',
+        to: localePath({
+          name: 'dashboard-location-slug-add',
+          params: {
+            slug: route.params.slug,
+          },
+        }),
+        icon: 'tabler:circle-plus-filled',
+      });
+    }
   }
 });
 
@@ -104,6 +113,12 @@ function toggleSidebar() {
           :label="item.label"
           :icon="item.icon"
         />
+        <div
+          v-if="route.path.startsWith('/dashboard/location') && currentLocationStatus === 'pending'"
+          class="flex items-center justify-center"
+        >
+          <div class="loading" />
+        </div>
         <div v-if="sidebarStore.loading || sidebarStore.sidebarItems.length" class="divider" />
         <div v-if="sidebarStore.loading" class="px-4">
           <div class="skeleton h-4 w-full" />
@@ -135,9 +150,16 @@ function toggleSidebar() {
     <div class="flex-1 overflow-auto bg-base-200">
       <div
         class="flex size-full"
-        :class="{ 'flex-col': route.path !== '/dashboard/add' }"
+        :class="{
+          'flex-col': !EDIT_PAGES.has(getRouteBaseName(route)?.toString() || ''),
+        }"
       >
-        <NuxtPage />
+        <NuxtPage
+          :class="{
+            'w-96': EDIT_PAGES.has(getRouteBaseName(route)?.toString() || ''),
+            'shrink-0': EDIT_PAGES.has(getRouteBaseName(route)?.toString() || ''),
+          }"
+        />
         <div class="flex-1">
           <AppMap />
         </div>

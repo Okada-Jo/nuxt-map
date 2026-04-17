@@ -40,7 +40,7 @@ const { signIn } = authStore;
       Sign in with github
       <span v-if="loading" class="loading loading-spinner loading-md" />
       <Icon
-        v-else
+        v-if="!loading"
         name="tabler:brand-github"
         size="24"
       />
