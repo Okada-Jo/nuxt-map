@@ -10,7 +10,7 @@ const locationsStore = useLocationStore();
 const sidebarStore = useSidebarStore();
 const mapStore = useMapStore();
 
-const { currentLocation } = storeToRefs(locationsStore);
+const { currentLocation, currentLocationStatus } = storeToRefs(locationsStore);
 
 const localePath = useLocalePath();
 const getRouteBaseName = useRouteBaseName();
@@ -49,11 +49,11 @@ effect(() => {
       icon: 'tabler:arrow-left',
     }, {
       id: 'link-location',
-      label: currentLocation.value ? currentLocation.value.name : 'View Logs',
+      label: currentLocationStatus.value === 'pending' || !currentLocation.value ? 'Loading...' : currentLocation.value.name,
       to: localePath({
         name: 'dashboard-location-slug',
         params: {
-          slug: currentLocation.value?.slug,
+          slug: route.params.slug,
         },
       }),
       icon: 'tabler:map',
@@ -63,7 +63,7 @@ effect(() => {
       to: localePath({
         name: 'dashboard-location-slug-edit',
         params: {
-          slug: currentLocation.value?.slug,
+          slug: route.params.slug,
         },
       }),
       icon: 'tabler:map-pin-cog',
@@ -73,7 +73,7 @@ effect(() => {
       to: localePath({
         name: 'dashboard-location-slug-add',
         params: {
-          slug: currentLocation.value?.slug,
+          slug: route.params.slug,
         },
       }),
       icon: 'tabler:circle-plus-filled',

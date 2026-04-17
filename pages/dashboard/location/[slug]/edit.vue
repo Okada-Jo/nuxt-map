@@ -17,6 +17,7 @@ async function onSubmit(values: InsertLocation) {
 
 <template>
   <LocationForm
+    v-if="locationStore.currentLocationStatus !== 'pending'"
     :on-submit
     :initial-values="locationStore.currentLocation"
   />
