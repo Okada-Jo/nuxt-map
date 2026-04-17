@@ -13,6 +13,13 @@ onMounted(() => {
     locationsStore.refreshCurrentLocation();
   });
 });
+
+onBeforeRouteUpdate((to) => {
+  const baseName = getRouteBaseName(to);
+  if (baseName === 'dashboard-location-slug') {
+    locationsStore.refreshCurrentLocation();
+  }
+});
 </script>
 
 <template>

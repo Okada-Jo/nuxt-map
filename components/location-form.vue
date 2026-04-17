@@ -9,6 +9,9 @@ import { InsertLocation } from '~/lib/db/schema/location';
 const props = defineProps<{
   initialValues?: InsertLocation | null;
   onSubmit: (location: InsertLocation) => Promise<any>;
+  onSubmitComplete: () => void;
+  submitLabel: string;
+  submitIcon: string;
 }>();
 
 const router = useRouter();
@@ -34,6 +37,7 @@ const onSubmit = handleSubmit(async (values: InsertLocation) => {
     loading.value = true;
     props.onSubmit(values);
     submitted.value = true;
+    props.onSubmitComplete();
   }
   catch (e) {
     const error = e as FetchError;
@@ -167,11 +171,11 @@ onBeforeRouteLeave(() => {
         type="submit"
         class="btn btn-primary"
       >
-        Add
+        {{ props.submitLabel }}
         <span v-if="loading" class="loading loading-spinner loading-sm" />
         <Icon
           v-if="!loading"
-          name="tabler:circle-plus-filled"
+          :name="props.submitIcon"
           size="24"
         />
       </button>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { InsertLocation } from '~/lib/db/schema';
 
+const localePath = useLocalePath();
 const { $csrfFetch } = useNuxtApp();
 
 async function onSubmit(values: InsertLocation) {
@@ -8,7 +9,10 @@ async function onSubmit(values: InsertLocation) {
     method: 'post',
     body: values,
   });
-  navigateTo('/dashboard');
+}
+
+function onSubmitComplete() {
+  navigateTo(localePath('dashboard'));
 }
 </script>
 
@@ -24,6 +28,9 @@ async function onSubmit(values: InsertLocation) {
 
       <LocationForm
         :on-submit
+        :on-submit-complete
+        submit-label="Add"
+        submit-icon="tabler:circle-plus-filled"
       />
     </div>
   </div>
