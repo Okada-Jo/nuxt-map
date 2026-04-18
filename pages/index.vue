@@ -12,14 +12,16 @@ const authStore = useAuthStore();
         <p class="py-6">
           Keep track of your travels and adventures with this simple travel log application.
         </p>
-        <AuthButton v-if="!authStore.user" />
-        <NuxtLink
-          v-if="authStore.user"
-          to="/dashboard"
-          class="btn btn-primary"
-        >
-          Start Logging
-        </NuxtLink>
+        <ClientOnly>
+          <AuthButton v-if="!authStore.user" />
+          <NuxtLink
+            v-if="authStore.user"
+            to="/dashboard"
+            class="btn btn-primary"
+          >
+            Start Logging
+          </NuxtLink>
+        </ClientOnly>
       </div>
     </div>
   </div>
