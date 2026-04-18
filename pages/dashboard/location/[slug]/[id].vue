@@ -88,5 +88,8 @@ onMounted(() => {
         </p>
       </div>
     </div>
+    <div v-else>
+      <NuxtPage />
+    </div>
   </div>
 </template>

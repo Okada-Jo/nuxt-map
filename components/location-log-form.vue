@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { OSAKA } from '~/lib/constants/constants';
+import { OSAKA } from '~/lib/constants';
 import { InsertLocationLog } from '~/lib/db/schema';
 
 const props = defineProps<{

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { InsertLocationLog } from '~/lib/db/schema';
 
-import { OSAKA } from '~/lib/constants/constants';
+import { OSAKA } from '~/lib/constants';
 
 const route = useRoute();
 const { currentLocation } = useLocationStore();
