@@ -13,7 +13,7 @@ const route = useRoute();
 </script>
 
 <template>
-  <div class="tooltip tooltip-right" :data-tip="!showLabel ? props.label : undefined">
+  <div class="flex flex-col tooltip tooltip-right" :data-tip="!showLabel ? props.label : undefined">
     <NuxtLink
       :to="props.href || props.to"
       :class="{ 'bg-base-300': route.path === href, 'justify-center': !showLabel, 'justify-start': showLabel }"
@@ -25,7 +25,10 @@ const route = useRoute();
         :class="iconColor"
       />
       <Transition name="grow">
-        <span v-if="showLabel">
+        <span
+          v-if="showLabel"
+          class="truncate"
+        >
           {{ props.label }}
         </span>
       </Transition>

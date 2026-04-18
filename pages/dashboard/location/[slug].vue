@@ -141,7 +141,7 @@ onBeforeRouteUpdate((to) => {
       </div>
 
       <div
-        v-else-if="getRouteBaseName(route) === 'dashboard-location-slug' && location?.locationLogs.length > 0"
+        v-else-if="!loading && getRouteBaseName(route) === 'dashboard-location-slug' && location?.locationLogs.length > 0"
         class="location-list"
       >
         <LocationCard
