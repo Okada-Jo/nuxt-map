@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CURRENT_LOCATION_PAGES, EDIT_PAGES, LOCATION_PAGES } from '~/lib/constants/constants';
+import { CURRENT_LOCATION_LOG_PAGES, CURRENT_LOCATION_PAGES, EDIT_PAGES, LOCATION_PAGES } from '~/lib/constants/constants';
 import { useLocationStore } from '~/stores/locations';
 import { useSidebarStore } from '~/stores/sidebar';
 import { isPointSelected } from '~/utils/map-points';
@@ -19,12 +19,18 @@ if (LOCATION_PAGES.has(getRouteBaseName(route)?.toString() || '')) {
   await locationsStore.refreshLocations();
 }
 
-if (CURRENT_LOCATION_PAGES.has(getRouteBaseName(route)?.toString() || '')) {
+if (CURRENT_LOCATION_PAGES.has(getRouteBaseName(route)?.toString() || '') || CURRENT_LOCATION_LOG_PAGES.has(getRouteBaseName(route)?.toString() || '')) {
   await locationsStore.refreshCurrentLocation();
 }
 
+if (CURRENT_LOCATION_LOG_PAGES.has(getRouteBaseName(route)?.toString() || '')) {
+  await locationsStore.refreshCurrentLocationLog();
+}
+
 onMounted(() => {
-  isSidebarOpen.value = localStorage.getItem('isSidebarOpen') === 'true';
+  nextTick(() => {
+    isSidebarOpen.value = localStorage.getItem('isSidebarOpen') === 'true';
+  });
 });
 
 effect(() => {
@@ -51,7 +57,7 @@ effect(() => {
     if (currentLocation.value && currentLocationStatus.value !== 'pending') {
       sidebarStore.sidebarTopItems.push({
         id: 'link-location',
-        label: !currentLocation.value ? 'Loading...' : currentLocation.value.name,
+        label: currentLocation.value.name,
         to: localePath({
           name: 'dashboard-location-slug',
           params: {
@@ -80,6 +86,22 @@ effect(() => {
         }),
         icon: 'tabler:circle-plus-filled',
       });
+    }
+  }
+  else if (CURRENT_LOCATION_LOG_PAGES.has(getRouteBaseName(route)?.toString() || '')) {
+    if (currentLocation.value && currentLocationStatus.value !== 'pending') {
+      sidebarStore.sidebarTopItems = [{
+        id: 'link-location',
+        label: `Back to "${currentLocation.value.name}"`,
+        to: localePath({
+          name: 'dashboard-location-slug',
+          params: {
+            slug: route.params.slug,
+            id: undefined,
+          },
+        }),
+        icon: 'tabler:arrow-left',
+      }];
     }
   }
 });
