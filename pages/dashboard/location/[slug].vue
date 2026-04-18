@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { FetchError } from 'ofetch';
 
+import { formatDate } from '~/utils/format-date';
+
 const route = useRoute();
 const localePath = useLocalePath();
 const getRouteBaseName = useRouteBaseName();
@@ -57,7 +59,7 @@ onBeforeRouteUpdate((to) => {
 </script>
 
 <template>
-  <div class="p-4 min-h-64">
+  <div class="page-content-top">
     <div v-if="loading">
       <div class="loading loading-spinner" />
     </div>
@@ -136,6 +138,28 @@ onBeforeRouteUpdate((to) => {
           Add location log
           <Icon name="tabler:map-pin-plus" size="24" />
         </NuxtLink>
+      </div>
+
+      <div
+        v-else-if="getRouteBaseName(route) === 'dashboard-location-slug' && location?.locationLogs.length > 0"
+        class="location-list"
+      >
+        <LocationCard
+          v-for="log in location?.locationLogs"
+          :key="log.id"
+          :map-point="createMapPointFromLocationLog(log)"
+        >
+          <template #top>
+            <p class="text-small italic text-gray-500">
+              <span v-if="formatDate(log.startedAt) !== formatDate(log.endedAt)">
+                {{ formatDate(log.startedAt) }} / {{ formatDate(log.endedAt) }}
+              </span>
+              <span v-else>
+                {{ formatDate(log.startedAt) }}
+              </span>
+            </p>
+          </template>
+        </LocationCard>
       </div>
     </div>
     <div v-if="getRouteBaseName(route) !== 'dashboard-location-slug'">

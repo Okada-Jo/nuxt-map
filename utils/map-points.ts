@@ -1,4 +1,4 @@
-import type { SelectLocation } from '~/lib/db/schema';
+import type { SelectLocation, SelectLocationLog } from '~/lib/db/schema';
 import type { MapPoint } from '~/lib/types';
 
 export function createMapPointFromLocation(location: SelectLocation): MapPoint {
@@ -6,6 +6,18 @@ export function createMapPointFromLocation(location: SelectLocation): MapPoint {
   return {
     ...location,
     to: localePath({ name: 'dashboard-location-slug', params: { slug: location.slug } }),
+    toLabel: 'View',
+  };
+}
+
+export function createMapPointFromLocationLog(locationLog: SelectLocationLog): MapPoint {
+  const localePath = useLocalePath();
+  if (!locationLog.id) {
+    console.warn('createMapPointFromLocationLog: locationLog.id is missing', locationLog);
+  }
+  return {
+    ...locationLog,
+    to: localePath({ name: 'dashboard-location-slug-id', params: { id: locationLog.id } }),
     toLabel: 'View',
   };
 }
