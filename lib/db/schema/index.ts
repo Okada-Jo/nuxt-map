@@ -1,4 +1,4 @@
 export * from './auth';
 export * from './location';
-export * from './location_log';
-export * from './location_log_image';
+export * from './location-log';
+export * from './location-log-image';
