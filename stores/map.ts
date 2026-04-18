@@ -2,6 +2,8 @@ import type { LngLatBounds } from 'maplibre-gl';
 
 import type { MapPoint } from '~/lib/types';
 
+import { OSAKA } from '~/lib/constants/constants';
+
 const BOUND_PADDING = 60;
 const MAX_ZOOM = 5;
 
@@ -20,8 +22,16 @@ export const useMapStore = defineStore('useMapStore', () => {
 
     effect(() => {
       const firstPoint = mapPoints.value[0];
-      if (!firstPoint)
+      if (!firstPoint) {
+        map.map?.flyTo({
+          center: [
+            (OSAKA as [number, number])[0],
+            (OSAKA as [number, number])[1],
+          ],
+          zoom: 2,
+        });
         return;
+      }
 
       bounds = mapPoints.value.reduce((bounds, point) => {
         return bounds.extend([point.long, point.lat]);

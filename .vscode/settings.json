@@ -27,14 +27,20 @@
     { "rule": "*semi", "severity": "off", "fixable": true }
   ],
 
+  "tailwindCSS.experimental.classRegex": [],
   "tailwindCSS.includeLanguages": {
-    "html": "html",
+    "plaintext": "html",
     "javascript": "javascript",
-    "css": "css"
+    "vue": "html"
   },
-  "editor.quickSuggestions": {
-    "strings": true
-  },
+  "tailwindCSS.files.exclude": [
+    "**/.git/**",
+    "**/node_modules/**",
+    "**/.hg/**",
+    "**/.svn/**"
+  ],
+  "tailwindCSS.experimental.configFile": null,
+  "tailwindCSS.nodePath": "/usr/bin/node",
 
   // Enable eslint for all supported languages
   "eslint.validate": [
