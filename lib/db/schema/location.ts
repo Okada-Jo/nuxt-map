@@ -4,10 +4,12 @@ import { relations } from 'drizzle-orm';
 import { int, real, sqliteTable, text, unique } from 'drizzle-orm/sqlite-core';
 import { createInsertSchema } from 'drizzle-zod';
 
-import type { SelectLocationLog } from './location_log';
+import { DescrptionSchema, LatSchema, LongSchema, NameSchema } from '~/lib/zod-schemas';
+
+import type { SelectLocationLog } from './location-log';
 
 import { user } from './auth';
-import { locationLog } from './location_log';
+import { locationLog } from './location-log';
 
 export const location = sqliteTable('location', {
   id: int().primaryKey({ autoIncrement: true }),
@@ -28,10 +30,10 @@ export const locationRelationns = relations(location, ({ many }) => ({
 }));
 
 export const InsertLocation = createInsertSchema(location, {
-  name: field => field.min(1).max(128),
-  description: field => field.max(1024),
-  lat: field => field.min(-90).max(90),
-  long: field => field.min(-180).max(180),
+  name: NameSchema,
+  description: DescrptionSchema,
+  lat: LatSchema,
+  long: LongSchema,
 }).omit({
   id: true,
   slug: true,

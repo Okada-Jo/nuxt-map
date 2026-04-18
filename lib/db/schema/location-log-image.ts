@@ -1,7 +1,7 @@
 import { int, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 import { user } from './auth';
-import { locationLog } from './location_log';
+import { locationLog } from './location-log';
 
 export const locationLogImage = sqliteTable('locationLogImage', {
   id: int().primaryKey({ autoIncrement: true }),

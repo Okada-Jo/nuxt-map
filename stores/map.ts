@@ -3,12 +3,12 @@ import type { LngLatBounds } from 'maplibre-gl';
 import type { MapPoint } from '~/lib/types';
 
 const BOUND_PADDING = 60;
-const MAX_ZOOM = 11;
+const MAX_ZOOM = 5;
 
 export const useMapStore = defineStore('useMapStore', () => {
   const mapPoints = ref<MapPoint[]>([]);
   const selectedPoint = ref<MapPoint | null>(null);
-  const addedPoint = ref<MapPoint & { centerMap?: boolean } | null>(null);
+  const addedPoint = ref<MapPoint & { centerMap?: boolean; zoom?: number } | null>(null);
 
   let bounds: LngLatBounds | null = null;
 
@@ -43,8 +43,8 @@ export const useMapStore = defineStore('useMapStore', () => {
       if ((newValue && !oldValue) || newValue?.centerMap) {
         map.map?.flyTo({
           center: [newValue.long, newValue.lat],
-          speed: newValue?.centerMap ? 1.25 : 0.75,
-          zoom: 6,
+          speed: newValue.centerMap ? 1.25 : 0.75,
+          zoom: newValue.zoom || 6,
         });
       }
     }, {
