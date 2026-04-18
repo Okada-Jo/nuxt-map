@@ -2,6 +2,8 @@
 import type { FetchError } from 'ofetch';
 import type { ZodSchema } from 'zod';
 
+import { ne } from 'drizzle-orm';
+
 import type { LatLongItem, NominatimResult } from '~/lib/types';
 
 import { OSAKA } from '~/lib/constants/constants';
@@ -71,14 +73,16 @@ function formatNumber(value: number) {
 }
 
 onMounted(() => {
-  mapStore.addedPoint = {
-    name: 'Added point',
-    id: 1,
-    description: '',
-    long: props.initialValues?.long || (OSAKA as [number, number])[0],
-    lat: props.initialValues?.lat || (OSAKA as [number, number])[1],
-    zoom: props.zoom,
-  };
+  nextTick(() => {
+    mapStore.addedPoint = {
+      name: 'Added point',
+      id: 1,
+      description: '',
+      long: props.initialValues?.long || (OSAKA as [number, number])[0],
+      lat: props.initialValues?.lat || (OSAKA as [number, number])[1],
+      zoom: props.zoom,
+    };
+  });
 });
 
 onBeforeRouteLeave(() => {
