@@ -10,8 +10,13 @@ const {
   currentLocationLogStatus: status,
 } = storeToRefs(locationsStore);
 
+const { $csrfFetch } = useNuxtApp();
+
 async function onSubmit(values: InsertLocationLog) {
-  console.log(values);
+  await $csrfFetch(`/api/locations/${route.params.slug}/${route.params.id}`, {
+    method: 'put',
+    body: values,
+  });
 }
 
 function submitComplete() {

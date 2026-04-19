@@ -102,7 +102,7 @@ effect(() => {
         }),
         icon: 'tabler:arrow-left',
       }, {
-        id: 'link-edit-location-log',
+        id: 'link-location-log-id',
         label: 'View Log',
         to: localePath({
           name: 'dashboard-location-slug-id',
@@ -113,7 +113,7 @@ effect(() => {
         }),
         icon: 'tabler:map-pin',
       }, {
-        id: 'link-edit-location-log',
+        id: 'link-edit-location-log-id',
         label: 'Edit Log',
         to: localePath({
           name: 'dashboard-location-slug-id-edit',
