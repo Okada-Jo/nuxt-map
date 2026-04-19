@@ -1,7 +1,9 @@
+import type { RouteLocationRaw } from 'vue-router';
+
 import type { SelectLocationLog, SelectLocationWithLogs } from '~/lib/db/schema';
 import type { MapPoint } from '~/lib/types';
 
-import { CURRENT_LOCATION_LOG_PAGES, CURRENT_LOCATION_PAGES, LOCATION_PAGES } from '~/lib/constants/constants';
+import { CURRENT_LOCATION_LOG_PAGES, CURRENT_LOCATION_PAGES, LOCATION_PAGES } from '~/lib/constants';
 import { createMapPointFromLocation } from '~/utils/map-points';
 
 export const useLocationStore = defineStore ('useLocationStore', () => {
@@ -41,8 +43,9 @@ export const useLocationStore = defineStore ('useLocationStore', () => {
   const mapStore = useMapStore();
   const localePath = useLocalePath();
 
-  effect(async () => {
-    if (locations.value && LOCATION_PAGES.has(getRouteBaseName(route)?.toString() || '')) {
+  function updateSidebar(route: RouteLocationRaw) {
+    const baseRoute = getRouteBaseName(route)?.toString() || '';
+    if (locations.value && LOCATION_PAGES.has(baseRoute)) {
       const mapPoints: MapPoint[] = [];
       const sidebarItems: SidebarItem[] = [];
 
@@ -61,7 +64,7 @@ export const useLocationStore = defineStore ('useLocationStore', () => {
       sidebarStore.sidebarItems = sidebarItems;
       mapStore.mapPoints = mapPoints;
     }
-    else if (currentLocation.value && CURRENT_LOCATION_PAGES.has(getRouteBaseName(route)?.toString() || '')) {
+    else if (currentLocation.value && CURRENT_LOCATION_PAGES.has(baseRoute)) {
       const mapPoints: MapPoint[] = [];
       const sidebarItems: SidebarItem[] = [];
 
@@ -85,7 +88,7 @@ export const useLocationStore = defineStore ('useLocationStore', () => {
         mapStore.mapPoints = [currentLocation.value];
       }
     }
-    else if (currentLocationLog.value && CURRENT_LOCATION_LOG_PAGES.has(getRouteBaseName(route)?.toString() || '')) {
+    else if (currentLocationLog.value && CURRENT_LOCATION_LOG_PAGES.has(baseRoute)) {
       sidebarStore.sidebarItems = [];
       mapStore.mapPoints = [currentLocationLog.value];
     }
@@ -94,7 +97,10 @@ export const useLocationStore = defineStore ('useLocationStore', () => {
     if (sidebarStore.loading) {
       mapStore.mapPoints = [];
     }
-  });
+  }
+  // effect(() => {
+  //   updateSidebar(route);
+  // });
 
   return {
     locations,
@@ -108,5 +114,6 @@ export const useLocationStore = defineStore ('useLocationStore', () => {
     currentLocationLogStatus,
     currentLocationLogError,
     refreshCurrentLocationLog,
+    updateSidebar,
   };
 });

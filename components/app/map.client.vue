@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { LngLat, MapMouseEvent } from 'maplibre-gl';
 
-import { OSAKA } from '~/lib/constants/constants';
+import { OSAKA } from '~/lib/constants';
 import { isPointSelected } from '~/utils/map-points';
 
 const colorMode = useColorMode();

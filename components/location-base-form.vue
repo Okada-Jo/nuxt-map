@@ -6,7 +6,7 @@ import { ne } from 'drizzle-orm';
 
 import type { LatLongItem, NominatimResult } from '~/lib/types';
 
-import { OSAKA } from '~/lib/constants/constants';
+import { OSAKA } from '~/lib/constants';
 
 const props = defineProps<{
   initialValues: T;

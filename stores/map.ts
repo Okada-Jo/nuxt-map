@@ -2,7 +2,7 @@ import type { LngLatBounds } from 'maplibre-gl';
 
 import type { MapPoint } from '~/lib/types';
 
-import { OSAKA } from '~/lib/constants/constants';
+import { OSAKA } from '~/lib/constants';
 
 const BOUND_PADDING = 60;
 const MAX_ZOOM = 5;

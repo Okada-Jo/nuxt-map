@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CURRENT_LOCATION_LOG_PAGES, CURRENT_LOCATION_PAGES, EDIT_PAGES, LOCATION_PAGES } from '~/lib/constants/constants';
+import { CURRENT_LOCATION_LOG_PAGES, CURRENT_LOCATION_PAGES, EDIT_PAGES, LOCATION_PAGES } from '~/lib/constants';
 import { useLocationStore } from '~/stores/locations';
 import { useSidebarStore } from '~/stores/sidebar';
 import { isPointSelected } from '~/utils/map-points';
@@ -34,6 +34,7 @@ onMounted(() => {
 });
 
 effect(() => {
+  locationsStore.updateSidebar(route);
   if (LOCATION_PAGES.has(getRouteBaseName(route)?.toString() || '')) {
     sidebarStore.sidebarTopItems = [{
       id: 'link-dashboard',
@@ -97,10 +98,31 @@ effect(() => {
           name: 'dashboard-location-slug',
           params: {
             slug: route.params.slug,
-            id: undefined,
           },
         }),
         icon: 'tabler:arrow-left',
+      }, {
+        id: 'link-location-log-id',
+        label: 'View Log',
+        to: localePath({
+          name: 'dashboard-location-slug-id',
+          params: {
+            slug: route.params.slug,
+            id: route.params.id,
+          },
+        }),
+        icon: 'tabler:map-pin',
+      }, {
+        id: 'link-edit-location-log-id',
+        label: 'Edit Log',
+        to: localePath({
+          name: 'dashboard-location-slug-id-edit',
+          params: {
+            slug: route.params.slug,
+            id: route.params.id,
+          },
+        }),
+        icon: 'tabler:map-pin-cog',
       }];
     }
   }
