@@ -44,3 +44,17 @@ export async function updateLocationLog(
 
   return updated;
 }
+
+export async function removeLocationLog(
+  locationLogId: number,
+  userId: number,
+) {
+  const [removed] = await db.delete(locationLog)
+    .where(and(
+      eq(locationLog.id, locationLogId),
+      eq(locationLog.userId, userId),
+    ))
+    .returning();
+
+  return removed;
+}

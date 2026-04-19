@@ -76,7 +76,7 @@ onBeforeRouteUpdate((to) => {
     <div
       v-if="getRouteBaseName(route) === 'dashboard-location-slug' && location && !loading"
     >
-      <div class="flex gap-2">
+      <div class="flex gap-2 items-center">
         <h2 class="text-xl">
           {{ location?.name }}
         </h2>
