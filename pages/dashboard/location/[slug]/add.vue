@@ -28,7 +28,7 @@ function submitComplete() {
 
 <template>
   <LocationLogForm
-    submit-label="Add Location Log"
+    :submit-label="$t('Add Location Log')"
     submit-icon="tabler:map-pin-plus"
     :on-submit="onSubmit"
     :on-submit-complete="submitComplete"

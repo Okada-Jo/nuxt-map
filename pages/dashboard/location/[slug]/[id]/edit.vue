@@ -33,7 +33,7 @@ function submitComplete() {
 <template>
   <LocationLogForm
     v-if="locationLog"
-    submit-label="Update Location Log"
+    :submit-label="$t('Update Location Log')"
     submit-icon="tabler:map-pin-up"
     :on-submit="onSubmit"
     :on-submit-complete="submitComplete"

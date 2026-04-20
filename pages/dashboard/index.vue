@@ -28,12 +28,12 @@ onMounted(() => {
       />
     </div>
     <div v-if="status !== 'pending' && !locations || locations?.length === 0" class="flex flex-col gap-2 mt-4">
-      <p>Add a location to get started</p>
+      <p>{{ $t('Add a location to get started') }}</p>
       <NuxtLink
         to="/dashboard/add"
         class="btn btn-primary w-64"
       >
-        Add Location
+        {{ $t('Add Location') }}
         <Icon name="tabler:circle-plus-filled" size="24" />
       </NuxtLink>
     </div>

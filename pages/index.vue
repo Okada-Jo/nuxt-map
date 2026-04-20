@@ -7,10 +7,10 @@ const authStore = useAuthStore();
     <div class="hero-content text-center min-h-96">
       <div class="max-w-md">
         <h1 class="text-5xl font-bold">
-          Travel Diary
+          {{ $t('Travel Diary') }}
         </h1>
         <p class="py-6">
-          Keep track of your travels and adventures with this simple travel log application.
+          {{ $t('Travel Diary description') }}
         </p>
         <ClientOnly>
           <AuthButton v-if="!authStore.user" />
@@ -19,7 +19,7 @@ const authStore = useAuthStore();
             to="/dashboard"
             class="btn btn-primary"
           >
-            Start Logging
+            {{ $t('Start Logging') }}
           </NuxtLink>
         </ClientOnly>
       </div>

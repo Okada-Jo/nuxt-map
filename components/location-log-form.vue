@@ -33,27 +33,27 @@ const initialValues = {
   >
     <AppFormField
       name="name"
-      label="Name"
+      :label="$t('Name')"
       :error="errors.name"
       :disabled="loading"
     />
     <AppFormField
       name="description"
-      label="Description"
+      :label="$t('Description')"
       type="textarea"
       :error="errors.description"
       :disabled="loading"
     />
     <AppDateFormField
       name="startedAt"
-      label="Started At"
+      :label="$t('Started At')"
       :value="initialValues.startedAt"
       :error="errors.startedAt"
       :disabled="loading"
     />
     <AppDateFormField
       name="endedAt"
-      label="Ended At"
+      :label="$t('Ended At')"
       :value="initialValues.endedAt"
       :error="errors.endedAt"
       :disabled="loading"

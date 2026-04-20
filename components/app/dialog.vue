@@ -54,7 +54,7 @@ onUnmounted(() => {
           class="btn btn-outline"
           @click="onClose"
         >
-          Cancel
+          {{ $t('Cancel') }}
         </button>
         <button
           class="btn"
