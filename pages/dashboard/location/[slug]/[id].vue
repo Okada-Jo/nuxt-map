@@ -106,7 +106,7 @@ onBeforeRouteUpdate((to) => {
             <li>
               <NuxtLink @click="openDialog">
                 <Icon name="tabler:trash-x-filled" size="20" />
-                Delete
+                {{ $t('Delete') }}
               </NuxtLink>
             </li>
             <li>
@@ -120,7 +120,7 @@ onBeforeRouteUpdate((to) => {
                 })"
               >
                 <Icon name="tabler:map-pin-cog" size="20" />
-                Edit
+                {{ $t('Edit') }}
               </NuxtLink>
             </li>
           </ul>
@@ -137,9 +137,9 @@ onBeforeRouteUpdate((to) => {
     </div>
     <AppDialog
       :is-open
-      title="Are you sure?"
+      :title="$t('Are you sure?')"
       description="Deleting the location log cannot be undone. Do you really want to do this?"
-      confirm-text="Yes, delete this log"
+      :confirm-text="$t('Delete log confirm')"
       confirm-button-class="btn-error"
       @on-confirmed="confirmDelete"
       @on-closed="isOpen = false"

@@ -31,7 +31,7 @@ function onSubmitComplete() {
     :on-submit
     :on-submit-complete
     :initial-values="locationStore.currentLocation"
-    submit-label="Update"
+    :submit-label="$t('Update')"
     submit-icon="tabler:map-pin-up"
   />
 </template>

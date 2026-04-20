@@ -123,28 +123,28 @@ onBeforeRouteLeave(() => {
   <form class="flex flex-col gap-2" @submit.prevent="onSubmit">
     <slot :errors="errors" :loading />
     <p v-if="controlledValues.lat && controlledValues.long" class="text-xs opacity-65">
-      Current coordinates:
+      {{ $t('Current coordinates:') }}
       {{ formatNumber(controlledValues.lat) }},
       {{ formatNumber(controlledValues.long) }}
     </p>
     <p>
-      To set the coordinates:
+      {{ $t('To set the coordinates:') }}
     </p>
     <ul class="list-disc ml-4 text-sm">
       <li>
-        Drag the
+        {{ $t('Drag the') }}
         <Icon
           name="tabler:map-pin-filled"
           size="16"
           class="text-warning"
         />
-        on the map.
+        {{ $t('on the map.') }}
       </li>
       <li>
-        Click on the map directly.
+        {{ $t('Click on the map directly.') }}
       </li>
       <li>
-        Search for a location below.
+        {{ $t('Search for a location below.') }}
       </li>
     </ul>
     <div class="flex justify-end gap-2">
@@ -155,7 +155,7 @@ onBeforeRouteLeave(() => {
         @click="router.back"
       >
         <Icon name="tabler:arrow-left" size="24" />
-        Cancel
+        {{ $t('Cancel') }}
       </button>
       <button
         :disabled="loading"

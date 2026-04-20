@@ -43,7 +43,7 @@ effect(() => {
       icon: 'tabler:map',
     }, {
       id: 'link-dashboard-add',
-      label: 'Add Location',
+      label: $t('Add Location'),
       href: localePath('/dashboard/add'),
       icon: 'tabler:circle-plus-filled',
     }];
@@ -68,7 +68,7 @@ effect(() => {
         icon: 'tabler:map',
       }, {
         id: 'link-location-edit',
-        label: 'Edit Location',
+        label: $t('Edit Location'),
         to: localePath({
           name: 'dashboard-location-slug-edit',
           params: {
@@ -78,7 +78,7 @@ effect(() => {
         icon: 'tabler:map-pin-cog',
       }, {
         id: 'link-location-add',
-        label: 'Add Location Log',
+        label: $t('Add Location Log'),
         to: localePath({
           name: 'dashboard-location-slug-add',
           params: {
@@ -114,7 +114,7 @@ effect(() => {
         icon: 'tabler:map-pin',
       }, {
         id: 'link-edit-location-log-id',
-        label: 'Edit Log',
+        label: $t('Edit Log'),
         to: localePath({
           name: 'dashboard-location-slug-id-edit',
           params: {
@@ -186,7 +186,7 @@ function toggleSidebar() {
         <SidebarButton
           href="/signout"
           :show-label="isSidebarOpen"
-          label="Sign Out"
+          :label="$t('Sign Out')"
           icon="tabler:logout-2"
         />
       </div>

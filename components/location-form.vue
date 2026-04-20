@@ -30,13 +30,13 @@ const props = defineProps<{
   >
     <AppFormField
       name="name"
-      label="Name"
+      :label="$t('Name')"
       :error="errors.name"
       :disabled="loading"
     />
     <AppFormField
       name="description"
-      label="Description"
+      :label="$t('Description')"
       type="textarea"
       :error="errors.description"
       :disabled="loading"
