@@ -28,3 +28,7 @@ logs
 // db
 local.db*
 local-db*
+
+
+// docker
+docker-data/*
